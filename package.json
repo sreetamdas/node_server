@@ -1,0 +1,28 @@
+{
+  "name": "node_server",
+  "version": "1.0.0",
+  "description": "CRUD server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sreetamdas/node_server.git"
+  },
+  "author": "Sreetam Das",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sreetamdas/node_server/issues"
+  },
+  "homepage": "https://github.com/sreetamdas/node_server#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.16.4",
+    "mongodb": "^3.2.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.0"
+  }
+}
