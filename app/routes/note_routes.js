@@ -25,6 +25,8 @@ module.exports = function(app) {
 			}
 		});
 		let session = driver.session();
+		console.log("file written, executing cypher");
+
 		session
 			.run(
 				`
@@ -44,6 +46,8 @@ module.exports = function(app) {
 				res.status(500).send(error);
 			});
 		fs.unlinkSync(filePath);
+		session.close();
+		driver.close();
 	});
 	app.get("/", (req, res) => {
 		console.log("GET /");
