@@ -1,18 +1,19 @@
 const fs = require("fs");
 const path = require("path");
 
-var neo4j = require("neo4j-driver").v1;
-var driver = neo4j.driver(
-	"bolt://localhost",
+const neo4j = require("neo4j-driver").v1;
+const driver = neo4j.driver(
+	"bolt://34.83.20.5:7687",
 	neo4j.auth.basic("neo4j", "asdasdasd"),
 );
-var session = driver.session();
-module.exports = function(app) {
-	app.post("/bulk_upload", (req, res) => {
-		const json = JSON.stringify(req.body, null, 4);
 
+module.exports = function(app, db) {
+	app.post("/bulk_upload", (req, res) => {
+		let session = driver.session();
+		const json = JSON.stringify(req.body, null, 4);
 		const dir = path.join(__dirname, "bulkUploadData");
 		console.log({ dir });
+
 		if (!fs.existsSync(dir)) {
 			fs.mkdirSync(dir);
 		}
@@ -25,18 +26,14 @@ module.exports = function(app) {
 				});
 			}
 		});
-		console.log("file written, executing cypher", session);
+		console.log("file written, executing cypher");
 
 		session
-			.run(
-				`CREATE (n: NODE { name: "test_node"})
-				`,
-			)
+			.run(`CREATE (n: NODE { name: "test_node2" })`)
 			.then(result => {
 				if (result) {
 					res.status(200).send(result);
 				}
-				session.close();
 			})
 			.catch(error => {
 				res.status(500).send(error);
@@ -51,12 +48,15 @@ module.exports = function(app) {
 		// res.
 	});
 	app.get("/getAllNodes", (req, res) => {
-		console.log("Get All Nodes", session);
-		console.log("driver >>>>>", driver);
+		// console.log("Get All Nodes", session);
+		// console.log("driver >>>>>", driver);
+		let session = driver.session();
+		console.log("here");
+		
 		session
 			.run("MATCH (n) RETURN n")
 			.then(result => {
-				if(result) {
+				if (result) {
 					res.status(200).send(result);
 				}
 				session.close();
