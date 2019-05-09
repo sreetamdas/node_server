@@ -1,6 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
+
+var neo4j = require("neo4j-driver").v1;
+var driver = neo4j.driver(
+	"bolt://localhost",
+	neo4j.auth.basic("neo4j", "asdasdasd"),
+);
 module.exports = function(app) {
 	app.post("/bulk_upload", (req, res) => {
 		const json = JSON.stringify(req.body, null, 4);
