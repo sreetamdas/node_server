@@ -1,0 +1,6 @@
+{
+	"ignore": [
+		"app/routes/bulkUploadData/*",
+		"app/data/*"
+	]
+}

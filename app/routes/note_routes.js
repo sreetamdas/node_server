@@ -30,7 +30,6 @@ module.exports = function(app) {
 		session
 			.run(
 				`CREATE (n: NODE { name: "test_node"})
-				Match (n) return n
 				`,
 			)
 			.then(result => {
