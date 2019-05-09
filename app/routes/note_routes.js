@@ -3,7 +3,7 @@ const path = require("path");
 
 var neo4j = require("neo4j-driver").v1;
 var driver = neo4j.driver(
-	"bolt://localhost",
+	"bolt://34.83.20.5:7687",
 	neo4j.auth.basic("neo4j", "asdasdasd"),
 );
 module.exports = function(app) {
@@ -29,11 +29,8 @@ module.exports = function(app) {
 
 		session
 			.run(
-				`
-				WITH "${filePath}" AS json_url
-				CALL apoc.load.json(json_url, '$.data.First') YIELD value
-				RETURN First, count(*)
-				)
+				`CREATE (n: NODE { name: "test_node"})
+				Match (n) return n
 				`,
 			)
 			.then(result => {
