@@ -3,9 +3,10 @@ const path = require("path");
 
 var neo4j = require("neo4j-driver").v1;
 var driver = neo4j.driver(
-	"bolt://34.83.20.5:7687",
+	"bolt://localhost",
 	neo4j.auth.basic("neo4j", "asdasdasd"),
 );
+var session = driver.session();
 module.exports = function(app) {
 	app.post("/bulk_upload", (req, res) => {
 		const json = JSON.stringify(req.body, null, 4);
@@ -24,8 +25,7 @@ module.exports = function(app) {
 				});
 			}
 		});
-		let session = driver.session();
-		console.log("file written, executing cypher");
+		console.log("file written, executing cypher", session);
 
 		session
 			.run(
@@ -49,5 +49,22 @@ module.exports = function(app) {
 		console.log("GET /");
 		res.status(200).send("Status: 200");
 		// res.
+	});
+	app.get("/getAllNodes", (req, res) => {
+		console.log("Get All Nodes", session);
+		console.log("driver >>>>>", driver);
+		session
+			.run("MATCH (n) RETURN n")
+			.then(result => {
+				if(result) {
+					res.status(200).send(result);
+				}
+				session.close();
+			})
+			.catch(error => {
+				res.status(500).send(error);
+			});
+		session.close();
+		driver.close();
 	});
 };
